@@ -1,73 +1,160 @@
-# Welcome to your Lovable project
+📘 Sistema de Missões Educacionais
 
-## Project info
+Um projeto acadêmico que simula uma plataforma educacional onde professores criam e gerenciam missões, e alunos respondem e realizam atividades, com dashboard, gerenciamento de usuários e banco de dados integrado.
 
-**URL**: https://lovable.dev/projects/381f1d16-6059-4403-8368-e1544514b828
+🚀 Funcionalidades Principais
+👨‍🏫 Para o Professor
 
-## How can I edit this code?
+Criar, editar e excluir missões
 
-There are several ways of editing your application.
+Escolher a qual matéria e turma a missão pertence
 
-**Use Lovable**
+Atribuir missões aos alunos
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/381f1d16-6059-4403-8368-e1544514b828) and start prompting.
+Visualizar respostas enviadas
 
-Changes made via Lovable will be committed automatically to this repo.
+Acompanhar status de cada aluno
 
-**Use your preferred IDE**
+Editar perguntas pré-definidas por matéria
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+Dashboard com resumo das atividades enviadas
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+🎓 Para o Aluno
 
-Follow these steps:
+Visualizar lista de missões por matéria
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+Ver qual professor criou cada missão
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+Enviar respostas
 
-# Step 3: Install the necessary dependencies.
-npm i
+Acompanhar missões pendentes e concluídas
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+Interface clara e simples
 
-**Edit a file directly in GitHub**
+🔐 Sistema de Login
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Autenticação básica (Professor / Aluno)
 
-**Use GitHub Codespaces**
+Botão para mostrar / ocultar senha
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Redirecionamento automático para o painel correto após login
 
-## What technologies are used for this project?
+📚 Matérias e Missões Pré-definidas
 
-This project is built with:
+Cada matéria possui 5 missões padrão, editáveis pelo professor.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+🧮 Matemática (5 missões)
 
-## How can I deploy this project?
+Resolva a equação: 2x + 5 = 15
 
-Simply open [Lovable](https://lovable.dev/projects/381f1d16-6059-4403-8368-e1544514b828) and click on Share -> Publish.
+Calcule a área de um triângulo com base 10 e altura 6
 
-## Can I connect a custom domain to my Lovable project?
+O que é um número primo?
 
-Yes, you can!
+Resolva: 45 ÷ 5
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+Defina o que é MMC
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+📖 Português (5 missões)
+
+Identifique o sujeito na frase: “O aluno estudou muito.”
+
+O que é um adjetivo?
+
+Reescreva a frase usando voz passiva
+
+Classifique o verbo como transitivo ou intransitivo
+
+Encontre o predicado verbal em uma frase
+
+🌍 Geografia (5 missões)
+
+O que é latitude?
+
+Cite um exemplo de país do hemisfério norte
+
+Explique o que é clima equatorial
+
+O que são placas tectônicas?
+
+Defina continente e dê um exemplo
+
+🧪 Ciências (5 missões)
+
+O que é fotossíntese?
+
+Explique a função dos pulmões
+
+O que é estado físico da água?
+
+Cite um exemplo de mamífero
+
+Defina célula
+
+🏛 História (5 missões)
+
+Quando ocorreu a Independência do Brasil?
+
+Quem foi Dom Pedro I?
+
+O que foi a Revolução Industrial?
+
+Explique o que foi o período colonial
+
+Cite uma invenção importante do século XX
+
+🖥 Tecnologias Utilizadas
+Tecnologia	Uso
+Node.js + Express	Backend / API
+Supabase	Banco de dados (Auth + Storage)
+HTML + CSS + JS	Frontend
+Fetch API	Comunicação com o backend
+Middleware Router	Organização de rotas
+
+
+⚙️ Como Rodar o Projeto Localmente
+1️⃣ Clone este repositório
+git clone https://github.com/seu-usuario/seu-repositorio.git
+
+2️⃣ Instale as dependências
+cd backend
+npm install
+
+3️⃣ Configure o Supabase
+
+Crie seu projeto no Supabase e adicione:
+
+URL do Supabase
+
+Chave anon
+
+Chave service_role (se usar no backend)
+
+Dentro de .env:
+
+SUPABASE_URL=xxxxx
+SUPABASE_KEY=xxxxx
+
+4️⃣ Inicie o backend
+npm start
+
+5️⃣ Abra o frontend
+
+Basta abrir os arquivos HTML no navegador.
+
+🧪 Melhorias Futuras
+
+Criar sistema de notificações
+
+Ranking gamificado entre alunos
+
+Chat interno aluno–professor
+
+Sistema de anexos
+
+Publicação de notas e feedback automático
+
+🤝 Contribuições
+
+Contribuições são sempre bem-vindas!
+Abra uma issue ou envie um pull request.
