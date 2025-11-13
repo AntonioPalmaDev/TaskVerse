@@ -1,97 +1,93 @@
 📘 Sistema de Missões Educacionais
 
-Um projeto acadêmico que simula uma plataforma educacional onde professores criam e gerenciam missões, e alunos respondem e realizam atividades, com dashboard, gerenciamento de usuários e banco de dados integrado.
+Plataforma acadêmica onde professores criam missões, alunos respondem, e ambos possuem dashboards separados para visualização das atividades.
 
 🚀 Funcionalidades Principais
-👨‍🏫 Para o Professor
+👨‍🏫 Professor
 
 Criar, editar e excluir missões
 
-Escolher a qual matéria e turma a missão pertence
+Definir matéria da missão
 
-Atribuir missões aos alunos
+Atribuir missão aos alunos
 
-Visualizar respostas enviadas
+Editar perguntas pré-definidas
 
-Acompanhar status de cada aluno
+Acompanhar respostas enviadas
 
-Editar perguntas pré-definidas por matéria
+Dashboard com resumo de atividades
 
-Dashboard com resumo das atividades enviadas
+🎓 Aluno
 
-🎓 Para o Aluno
+Visualizar missões por matéria
 
-Visualizar lista de missões por matéria
-
-Ver qual professor criou cada missão
+Conferir qual professor criou cada missão
 
 Enviar respostas
 
-Acompanhar missões pendentes e concluídas
+Acompanhar status: pendente / concluída
 
-Interface clara e simples
+🔐 Login
 
-🔐 Sistema de Login
+Autenticação para aluno e professor
 
-Autenticação básica (Professor / Aluno)
+Botão de mostrar/ocultar senha
 
-Botão para mostrar / ocultar senha
+Redirecionamento para dashboard correto
 
-Redirecionamento automático para o painel correto após login
+📚 Missões Pré-definidas por Matéria
 
-📚 Matérias e Missões Pré-definidas
+Cada matéria possui 5 missões iniciais já cadastradas e editáveis pelo professor.
 
-Cada matéria possui 5 missões padrão, editáveis pelo professor.
-
-🧮 Matemática (5 missões)
+🧮 Matemática
 
 Resolva a equação: 2x + 5 = 15
 
-Calcule a área de um triângulo com base 10 e altura 6
+Área de um triângulo com base 10 e altura 6
 
 O que é um número primo?
 
 Resolva: 45 ÷ 5
 
-Defina o que é MMC
+Defina MMC
 
-📖 Português (5 missões)
+📖 Português
 
 Identifique o sujeito na frase: “O aluno estudou muito.”
 
 O que é um adjetivo?
 
-Reescreva a frase usando voz passiva
+Reescreva a frase na voz passiva
 
-Classifique o verbo como transitivo ou intransitivo
+Classifique o verbo da frase
 
-Encontre o predicado verbal em uma frase
+Encontre o predicado verbal
 
-🌍 Geografia (5 missões)
+🌍 Geografia
 
 O que é latitude?
 
-Cite um exemplo de país do hemisfério norte
+Cite um país do hemisfério norte
 
-Explique o que é clima equatorial
+Explique clima equatorial
 
 O que são placas tectônicas?
 
-Defina continente e dê um exemplo
+Defina continente
 
-🧪 Ciências (5 missões)
+🧪 Ciências
 
 O que é fotossíntese?
 
-Explique a função dos pulmões
+Função dos pulmões
 
-O que é estado físico da água?
+Estados físicos da água
 
-Cite um exemplo de mamífero
+Cite um mamífero
 
 Defina célula
 
-🏛 História (5 missões)
+🏛 História
 
 Quando ocorreu a Independência do Brasil?
 
@@ -99,62 +95,69 @@ Quem foi Dom Pedro I?
 
 O que foi a Revolução Industrial?
 
-Explique o que foi o período colonial
+Explique o período colonial
 
-Cite uma invenção importante do século XX
+Cite uma invenção do século XX
 
-🖥 Tecnologias Utilizadas
-Tecnologia	Uso
-Node.js + Express	Backend / API
-Supabase	Banco de dados (Auth + Storage)
-HTML + CSS + JS	Frontend
+🛠️ Tecnologias Utilizadas
+Tecnologia	Função
+Node.js + Express	Backend
+Supabase	Banco de dados + autenticação
+HTML / CSS / JavaScript	Frontend
 Fetch API	Comunicação com o backend
-Middleware Router	Organização de rotas
+📁 Estrutura do Projeto
+/backend
+ ├── server.js
+ ├── routes/
+ ├── controllers/
+ ├── database/
+ └── services/
 
+ /frontend
+ ├── index.html
+ ├── login.html
+ ├── dashboard-aluno.html
+ ├── dashboard-professor.html
+ ├── css/
+ └── js/
 
-⚙️ Como Rodar o Projeto Localmente
-1️⃣ Clone este repositório
+README.md
+
+⚙️ Como Rodar Localmente
+1️⃣ Clone o repositório
 git clone https://github.com/seu-usuario/seu-repositorio.git
 
 2️⃣ Instale as dependências
 cd backend
 npm install
 
-3️⃣ Configure o Supabase
+3️⃣ Configure variáveis de ambiente
 
-Crie seu projeto no Supabase e adicione:
+Crie o arquivo .env dentro de /backend:
 
-URL do Supabase
+SUPABASE_URL=SEU_URL
+SUPABASE_KEY=SUA_CHAVE
 
-Chave anon
-
-Chave service_role (se usar no backend)
-
-Dentro de .env:
-
-SUPABASE_URL=xxxxx
-SUPABASE_KEY=xxxxx
-
-4️⃣ Inicie o backend
+4️⃣ Inicie o servidor
 npm start
 
 5️⃣ Abra o frontend
 
-Basta abrir os arquivos HTML no navegador.
+Acesse os arquivos .html pelo navegador.
 
-🧪 Melhorias Futuras
+🧪 Futuras Melhorias
 
-Criar sistema de notificações
+Sistema de notificações
 
-Ranking gamificado entre alunos
+Gamificação (ranking entre alunos)
 
-Chat interno aluno–professor
+Chat interno aluno ↔ professor
 
-Sistema de anexos
+Envio de arquivos em missões
 
-Publicação de notas e feedback automático
+Feedback automático para respostas
 
-🤝 Contribuições
+🤝 Contribuição
 
-Contribuições são sempre bem-vindas!
-Abra uma issue ou envie um pull request.
+Pull Requests são bem-vindos!
+Para grandes mudanças, abra uma Issue antes.
