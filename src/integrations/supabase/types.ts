@@ -61,8 +61,10 @@ export type Database = {
           created_at: string | null
           criado_por: string | null
           descricao: string
+          dificuldade: string | null
           id: string
           materia: Database["public"]["Enums"]["subject_type"]
+          origem: string | null
           pontos_xp: number
           status: Database["public"]["Enums"]["mission_status"]
           titulo: string
@@ -71,8 +73,10 @@ export type Database = {
           created_at?: string | null
           criado_por?: string | null
           descricao: string
+          dificuldade?: string | null
           id?: string
           materia: Database["public"]["Enums"]["subject_type"]
+          origem?: string | null
           pontos_xp?: number
           status?: Database["public"]["Enums"]["mission_status"]
           titulo: string
@@ -81,8 +85,10 @@ export type Database = {
           created_at?: string | null
           criado_por?: string | null
           descricao?: string
+          dificuldade?: string | null
           id?: string
           materia?: Database["public"]["Enums"]["subject_type"]
+          origem?: string | null
           pontos_xp?: number
           status?: Database["public"]["Enums"]["mission_status"]
           titulo?: string
@@ -100,6 +106,7 @@ export type Database = {
       usuarios: {
         Row: {
           created_at: string | null
+          email: string | null
           id: string
           login: string
           nome: string
@@ -108,6 +115,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string | null
+          email?: string | null
           id?: string
           login: string
           nome: string
@@ -116,6 +124,7 @@ export type Database = {
         }
         Update: {
           created_at?: string | null
+          email?: string | null
           id?: string
           login?: string
           nome?: string

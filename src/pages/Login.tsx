@@ -121,6 +121,17 @@ const Login = () => {
             </Button>
           </form>
           
+          <div className="mt-4 text-center">
+            <Button
+              variant="outline"
+              onClick={() => navigate('/cadastro')}
+              className="w-full"
+              disabled={loading}
+            >
+              Criar nova conta
+            </Button>
+          </div>
+          
           <div className="mt-6 pt-6 border-t">
             <p className="text-sm text-center text-muted-foreground mb-3">
               Usuários de demonstração:

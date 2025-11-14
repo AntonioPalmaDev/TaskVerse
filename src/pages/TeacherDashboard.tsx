@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { LogOut, Plus, CheckCircle, Clock, Trash2 } from "lucide-react";
+import { LogOut, Plus, CheckCircle, Clock, Trash2, Edit } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
@@ -42,6 +42,8 @@ interface Mission {
   descricao: string;
   pontos_xp: number;
   materia: string;
+  origem?: string;
+  dificuldade?: string;
 }
 
 const TeacherDashboard = () => {
@@ -51,13 +53,20 @@ const TeacherDashboard = () => {
   const [missions, setMissions] = useState<Mission[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [editingMission, setEditingMission] = useState<Mission | null>(null);
+  
+  // Filters
+  const [filterMateria, setFilterMateria] = useState<string>("todas");
+  const [filterStatus, setFilterStatus] = useState<string>("todas");
   
   // New mission form
   const [newMission, setNewMission] = useState({
     titulo: "",
     descricao: "",
     pontos_xp: 10,
-    materia: "matematica"
+    materia: "matematica",
+    dificuldade: "media"
   });
 
   useEffect(() => {
@@ -141,7 +150,9 @@ const TeacherDashboard = () => {
           descricao: newMission.descricao,
           pontos_xp: newMission.pontos_xp,
           materia: newMission.materia as 'matematica' | 'portugues' | 'ciencias' | 'historia' | 'geografia',
-          criado_por: user.id
+          dificuldade: newMission.dificuldade,
+          criado_por: user.id,
+          origem: 'customizada'
         }]);
 
       if (error) throw error;
@@ -152,13 +163,49 @@ const TeacherDashboard = () => {
         titulo: "",
         descricao: "",
         pontos_xp: 10,
-        materia: "matematica"
+        materia: "matematica",
+        dificuldade: "media"
       });
       loadData();
     } catch (error) {
       console.error('Error creating mission:', error);
       toast.error("Erro ao criar missão");
     }
+  };
+
+  const handleEditMission = async () => {
+    if (!editingMission || !editingMission.titulo.trim() || !editingMission.descricao.trim()) {
+      toast.error("Por favor, preencha todos os campos");
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('missoes')
+        .update({
+          titulo: editingMission.titulo,
+          descricao: editingMission.descricao,
+          pontos_xp: editingMission.pontos_xp,
+          materia: editingMission.materia as 'matematica' | 'portugues' | 'ciencias' | 'historia' | 'geografia',
+          dificuldade: editingMission.dificuldade
+        })
+        .eq('id', editingMission.id);
+
+      if (error) throw error;
+
+      toast.success("✏️ Missão atualizada com sucesso!");
+      setEditDialogOpen(false);
+      setEditingMission(null);
+      loadData();
+    } catch (error) {
+      console.error('Error updating mission:', error);
+      toast.error("Erro ao atualizar missão");
+    }
+  };
+
+  const openEditDialog = (mission: Mission) => {
+    setEditingMission(mission);
+    setEditDialogOpen(true);
   };
 
   const handleDeleteMission = async (missionId: string) => {
@@ -278,6 +325,22 @@ const TeacherDashboard = () => {
                       />
                     </div>
                   </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="dificuldade">Dificuldade</Label>
+                    <Select
+                      value={newMission.dificuldade}
+                      onValueChange={(value) => setNewMission({ ...newMission, dificuldade: value })}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="facil">⭐ Fácil</SelectItem>
+                        <SelectItem value="media">⭐⭐ Média</SelectItem>
+                        <SelectItem value="dificil">⭐⭐⭐ Difícil</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                   <Button onClick={handleCreateMission} className="w-full bg-success hover:bg-success/90">
                     Criar Missão
                   </Button>
@@ -293,7 +356,7 @@ const TeacherDashboard = () => {
               Entregas Pendentes ({submissions.length})
             </TabsTrigger>
             <TabsTrigger value="missions">
-              Minhas Missões ({missions.length})
+              Todas as Missões ({missions.length})
             </TabsTrigger>
           </TabsList>
 
@@ -339,7 +402,24 @@ const TeacherDashboard = () => {
           </TabsContent>
 
           <TabsContent value="missions" className="space-y-4">
-            {missions.map((mission) => (
+            <div className="flex gap-4 mb-4">
+              <Select value={filterMateria} onValueChange={setFilterMateria}>
+                <SelectTrigger className="w-[200px]">
+                  <SelectValue placeholder="Filtrar por matéria" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="todas">Todas as matérias</SelectItem>
+                  <SelectItem value="matematica">🔢 Matemática</SelectItem>
+                  <SelectItem value="portugues">📚 Português</SelectItem>
+                  <SelectItem value="ciencias">🔬 Ciências</SelectItem>
+                  <SelectItem value="historia">🏛️ História</SelectItem>
+                  <SelectItem value="geografia">🌍 Geografia</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            {missions
+              .filter(mission => filterMateria === "todas" || mission.materia === filterMateria)
+              .map((mission) => (
               <Card key={mission.id} className="shadow-card">
                 <CardHeader>
                   <div className="flex items-start justify-between">
@@ -347,16 +427,34 @@ const TeacherDashboard = () => {
                       <div className="flex items-center gap-2 mb-2">
                         <Badge variant="outline" className="capitalize">{mission.materia}</Badge>
                         <Badge variant="secondary">{mission.pontos_xp} XP</Badge>
+                        {mission.dificuldade && (
+                          <Badge variant="outline">
+                            {mission.dificuldade === 'facil' ? '⭐ Fácil' : 
+                             mission.dificuldade === 'media' ? '⭐⭐ Média' : 
+                             '⭐⭐⭐ Difícil'}
+                          </Badge>
+                        )}
+                        {mission.origem === 'padrao' && (
+                          <Badge variant="outline">📋 Padrão</Badge>
+                        )}
                       </div>
                       <CardTitle className="text-lg">{mission.titulo}</CardTitle>
                       <CardDescription className="mt-2">{mission.descricao}</CardDescription>
                     </div>
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button variant="ghost" size="sm">
-                          <Trash2 className="h-4 w-4 text-destructive" />
-                        </Button>
-                      </AlertDialogTrigger>
+                    <div className="flex gap-2">
+                      <Button 
+                        variant="ghost" 
+                        size="sm"
+                        onClick={() => openEditDialog(mission)}
+                      >
+                        <Edit className="h-4 w-4 text-primary" />
+                      </Button>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button variant="ghost" size="sm">
+                            <Trash2 className="h-4 w-4 text-destructive" />
+                          </Button>
+                        </AlertDialogTrigger>
                       <AlertDialogContent>
                         <AlertDialogHeader>
                           <AlertDialogTitle>Excluir Missão</AlertDialogTitle>
@@ -375,12 +473,94 @@ const TeacherDashboard = () => {
                         </AlertDialogFooter>
                       </AlertDialogContent>
                     </AlertDialog>
+                    </div>
                   </div>
                 </CardHeader>
               </Card>
             ))}
           </TabsContent>
         </Tabs>
+
+        {/* Edit Mission Dialog */}
+        <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle>Editar Missão</DialogTitle>
+              <DialogDescription>Atualize os detalhes da missão</DialogDescription>
+            </DialogHeader>
+            {editingMission && (
+              <div className="space-y-4 pt-4">
+                <div className="space-y-2">
+                  <Label htmlFor="edit-titulo">Título</Label>
+                  <Input
+                    id="edit-titulo"
+                    value={editingMission.titulo}
+                    onChange={(e) => setEditingMission({ ...editingMission, titulo: e.target.value })}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="edit-descricao">Descrição</Label>
+                  <Textarea
+                    id="edit-descricao"
+                    value={editingMission.descricao}
+                    onChange={(e) => setEditingMission({ ...editingMission, descricao: e.target.value })}
+                    className="min-h-[100px]"
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="edit-materia">Matéria</Label>
+                    <Select
+                      value={editingMission.materia}
+                      onValueChange={(value) => setEditingMission({ ...editingMission, materia: value })}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="matematica">🔢 Matemática</SelectItem>
+                        <SelectItem value="portugues">📚 Português</SelectItem>
+                        <SelectItem value="ciencias">🔬 Ciências</SelectItem>
+                        <SelectItem value="historia">🏛️ História</SelectItem>
+                        <SelectItem value="geografia">🌍 Geografia</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="edit-pontos_xp">Pontos XP</Label>
+                    <Input
+                      id="edit-pontos_xp"
+                      type="number"
+                      min="5"
+                      max="100"
+                      value={editingMission.pontos_xp}
+                      onChange={(e) => setEditingMission({ ...editingMission, pontos_xp: parseInt(e.target.value) })}
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="edit-dificuldade">Dificuldade</Label>
+                  <Select
+                    value={editingMission.dificuldade || "media"}
+                    onValueChange={(value) => setEditingMission({ ...editingMission, dificuldade: value })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="facil">⭐ Fácil</SelectItem>
+                      <SelectItem value="media">⭐⭐ Média</SelectItem>
+                      <SelectItem value="dificil">⭐⭐⭐ Difícil</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <Button onClick={handleEditMission} className="w-full bg-primary hover:bg-primary/90">
+                  Salvar Alterações
+                </Button>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
       </main>
     </div>
   );
