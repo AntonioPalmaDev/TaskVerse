@@ -1,4 +1,6 @@
-# 🎮 MVP Gamificado – Sistema de Missões com Supabase
+# 🎮 TaskVerse – Plataforma Gamificada de Missões Educacionais
+
+**TaskVerse — Sua Jornada Gamificada de Aprendizagem**
 
 Este projeto é um MVP gamificado baseado na abordagem de Aprendizagem Baseada em Projetos e Problemas (PBL).  
 O sistema permite que **alunos** realizem missões e **professores** criem, editem e avaliem atividades, tudo com um toque de gamificação utilizando XP.
