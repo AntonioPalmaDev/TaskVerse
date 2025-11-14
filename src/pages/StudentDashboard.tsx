@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { LogOut, Send } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -19,6 +20,8 @@ interface Mission {
   pontos_xp: number;
   status: 'pendente' | 'entregue' | 'aprovada';
   materia: string;
+  dificuldade?: string;
+  origem?: string;
 }
 
 interface User {
@@ -37,6 +40,7 @@ const StudentDashboard = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("todas");
+  const [filterMateria, setFilterMateria] = useState<string>("todas");
 
   useEffect(() => {
     const currentUser = localStorage.getItem('currentUser');
@@ -136,16 +140,36 @@ const StudentDashboard = () => {
   };
 
   const filterMissions = (missions: Mission[]) => {
+    let filtered = missions;
+    
+    // Filter by status
     switch (activeTab) {
       case 'pendentes':
-        return missions.filter(m => m.status === 'pendente');
+        filtered = missions.filter(m => m.status === 'pendente');
+        break;
       case 'entregues':
-        return missions.filter(m => m.status === 'entregue');
+        filtered = missions.filter(m => m.status === 'entregue');
+        break;
       case 'aprovadas':
-        return missions.filter(m => m.status === 'aprovada');
+        filtered = missions.filter(m => m.status === 'aprovada');
+        break;
       default:
-        return missions;
+        filtered = missions;
     }
+    
+    // Filter by materia
+    if (filterMateria !== "todas") {
+      filtered = filtered.filter(m => m.materia === filterMateria);
+    }
+    
+    // Sort by materia, then by status
+    return filtered.sort((a, b) => {
+      if (a.materia !== b.materia) {
+        return a.materia.localeCompare(b.materia);
+      }
+      const statusOrder = { 'pendente': 0, 'entregue': 1, 'aprovada': 2 };
+      return statusOrder[a.status] - statusOrder[b.status];
+    });
   };
 
   if (loading) {
@@ -182,6 +206,22 @@ const StudentDashboard = () => {
             <TabsTrigger value="entregues">Entregues</TabsTrigger>
             <TabsTrigger value="aprovadas">Aprovadas</TabsTrigger>
           </TabsList>
+          
+          <div className="mb-4">
+            <Select value={filterMateria} onValueChange={setFilterMateria}>
+              <SelectTrigger className="w-[200px]">
+                <SelectValue placeholder="Filtrar por matéria" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="todas">Todas as matérias</SelectItem>
+                <SelectItem value="matematica">🔢 Matemática</SelectItem>
+                <SelectItem value="portugues">📚 Português</SelectItem>
+                <SelectItem value="ciencias">🔬 Ciências</SelectItem>
+                <SelectItem value="historia">🏛️ História</SelectItem>
+                <SelectItem value="geografia">🌍 Geografia</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
           <TabsContent value={activeTab} className="space-y-4">
             {filterMissions(missions).length === 0 ? (
@@ -205,6 +245,7 @@ const StudentDashboard = () => {
                         pontosXp={mission.pontos_xp}
                         status={mission.status}
                         materia={mission.materia}
+                        dificuldade={mission.dificuldade}
                         onSubmit={mission.status === 'pendente' ? () => {
                           setSelectedMission(mission);
                           setDialogOpen(true);

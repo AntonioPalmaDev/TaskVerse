@@ -9,10 +9,11 @@ interface MissionCardProps {
   pontosXp: number;
   status: 'pendente' | 'entregue' | 'aprovada';
   materia: string;
+  dificuldade?: string;
   onSubmit?: () => void;
 }
 
-const MissionCard = ({ titulo, descricao, pontosXp, status, materia, onSubmit }: MissionCardProps) => {
+const MissionCard = ({ titulo, descricao, pontosXp, status, materia, dificuldade, onSubmit }: MissionCardProps) => {
   const statusConfig = {
     pendente: { label: "Pendente", icon: Clock, variant: "outline" as const, color: "text-muted-foreground" },
     entregue: { label: "Aguardando", icon: Clock, variant: "secondary" as const, color: "text-warning" },
@@ -40,6 +41,13 @@ const MissionCard = ({ titulo, descricao, pontosXp, status, materia, onSubmit }:
               <Badge variant="outline" className="capitalize">
                 {materia}
               </Badge>
+              {dificuldade && (
+                <Badge variant="outline">
+                  {dificuldade === 'facil' ? '⭐ Fácil' : 
+                   dificuldade === 'media' ? '⭐⭐ Média' : 
+                   '⭐⭐⭐ Difícil'}
+                </Badge>
+              )}
             </div>
             <CardTitle className="text-lg">{titulo}</CardTitle>
             <CardDescription className="mt-2">{descricao}</CardDescription>
