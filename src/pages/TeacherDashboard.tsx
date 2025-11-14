@@ -245,7 +245,7 @@ const TeacherDashboard = () => {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              Painel do Professor
+              TaskVerse
             </h1>
           </div>
           <Button variant="outline" onClick={handleLogout} size="sm">

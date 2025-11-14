@@ -107,9 +107,9 @@ const Register = () => {
           <div className="flex justify-center mb-4">
             <UserPlus className="h-16 w-16 text-primary animate-bounce-slow" />
           </div>
-          <CardTitle className="text-3xl font-bold text-center">Criar Nova Conta</CardTitle>
+          <CardTitle className="text-3xl font-bold text-center">Criar Conta no TaskVerse</CardTitle>
           <CardDescription className="text-base text-center">
-            Preencha os dados para se cadastrar
+            Junte-se à sua jornada gamificada de aprendizagem
           </CardDescription>
         </CardHeader>
         <CardContent>

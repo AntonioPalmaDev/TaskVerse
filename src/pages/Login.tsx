@@ -66,9 +66,9 @@ const Login = () => {
               <BookOpen className="h-10 w-10 text-primary absolute -bottom-2 -right-2" />
             </div>
           </div>
-          <CardTitle className="text-3xl font-bold">Quadro de Missões</CardTitle>
+          <CardTitle className="text-3xl font-bold">TaskVerse</CardTitle>
           <CardDescription className="text-base">
-            Entre para começar sua jornada de aprendizado
+            Sua Jornada Gamificada de Aprendizagem
           </CardDescription>
         </CardHeader>
         <CardContent>
